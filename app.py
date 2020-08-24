@@ -1,12 +1,13 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from helper import recipes, types, descriptions, ingredients, instructions, add_ingredients, add_instructions, comments
 from forms import RecipeForm, CommentForm
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "mysecret"
+app.config['SECRET_KEY'] = 'mysecret'
+WTF_CSRF_ENABLED = False
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route('/', methods=["GET", "POST"])
 def index():
 	recipe_form = RecipeForm(csrf_enabled=False)
 	if recipe_form.validate_on_submit():
@@ -14,11 +15,12 @@ def index():
 		recipes[new_id] = recipe_form.recipe.data
 		types[new_id] = recipe_form.recipe_type.data
 		descriptions[new_id] = recipe_form.description.data
-		new_ingredients = recipe_form.ingredients.data
+		new_igredients = recipe_form.ingredients.data
 		new_instructions = recipe_form.instructions.data
-		add_ingredients(new_id, new_ingredients)
+		add_ingredients(new_id, new_igredients)
 		add_instructions(new_id, new_instructions)
 		comments[new_id] = []
+		return redirect(url_for("recipe", id=new_id, _external=True, _scheme='https'))
 	return render_template("index.html", template_recipes=recipes, template_form=recipe_form)
 
 
@@ -34,6 +36,6 @@ def recipe(id):
 						   template_form=comment_form)
 
 
-@app.route("/about")
+@app.route('/about')
 def about():
 	return render_template("about.html")
