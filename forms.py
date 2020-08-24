@@ -4,10 +4,11 @@ from wtforms.validators import DataRequired
 
 
 class RecipeForm(FlaskForm):
-	recipe_categories = [("Breakfast", "Breakfast"), ("Lunch", "Lunch"), ("Dinner", "Dinner")]
+	recipe_categories = [("Breakfast", "Breakfast"), ("Lunch", "Lunch"),
+						 ("Dinner", "Dinner"), ("Late Dinner","Late Dinner")]
 	recipe = StringField("Recipe", validators=[DataRequired()])
-	#### Add `recipe_type` and assign it a new radio field instance
 
+	recipe_type = RadioField("Type", choices=recipe_categories)
 	description = StringField("Description")
 	ingredients = TextAreaField("Ingredients")
 	instructions = TextAreaField("Instructions")

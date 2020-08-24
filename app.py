@@ -12,8 +12,7 @@ def index():
 	if recipe_form.validate_on_submit():
 		new_id = len(recipes) + 1
 		recipes[new_id] = recipe_form.recipe.data
-		#### Add type data here
-
+		types[new_id] = recipe_form.recipe_type.data
 		descriptions[new_id] = recipe_form.description.data
 		new_ingredients = recipe_form.ingredients.data
 		new_instructions = recipe_form.instructions.data
